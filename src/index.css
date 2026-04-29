@@ -1,0 +1,14 @@
+/* 기본 스타일 파일 (index.css) */
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+  background: #f8f9fa;
+}
+
+h1 {
+  font-size: 2rem;
+  margin: 1.5rem 0 1rem 0;
+  text-align: center;
+}
+
+/* 그리드 관련 스타일은 grid/styles/grid.css에서 관리 */

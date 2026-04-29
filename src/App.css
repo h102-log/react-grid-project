@@ -1,0 +1,11 @@
+/* App 전용 스타일 */
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+h1 {
+  color: #333;
+}
