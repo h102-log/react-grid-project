@@ -159,6 +159,22 @@
   align-items: center;
   justify-content: center;
 }
+/* Header Modal (컬럼 드래그 시 나타나는 모달 스타일) */
+.header-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border: 1px solid #babfc7;
+  border-radius: 4px;
+  padding: 12px 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  font-size: 13px;
+  color: #181d1f;
+  pointer-events: none; /* 드래그 중 모달이 마우스 이벤트를 가로채지 않도록 */
+}
 
 /* Responsive: Mobile */
 @media (max-width: 600px) {

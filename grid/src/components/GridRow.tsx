@@ -11,7 +11,7 @@ const GridRow: React.FC<GridRowProps> = ({ rowData }) => {
   return (
     <div className="grid-row">
       {columns.map((col, cellIndex) => (
-        <GridCell key={col.key} value={rowData[col.key]} />
+        <GridCell key={col.key} columnKey={col.key} value={rowData[col.key]} />
       ))}
     </div>
   );

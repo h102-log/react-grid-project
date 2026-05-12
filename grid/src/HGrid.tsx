@@ -3,6 +3,7 @@ import type { GridProps } from "./types/types";
 import GridContainer from "./components/GridContainer";
 import GridHeader from "./components/GridHeader";
 import GridBody from "./components/GridBody";
+import HeaderModal from "./components/HeaderModal";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./styles/grid.css";
 import { useEffect } from "react";
@@ -29,6 +30,7 @@ const HGrid: React.FC<GridProps> = ({ columns, data }: GridProps) => {
       <GridContainer>
         <GridHeader />
         <GridBody />
+        <HeaderModal />
       </GridContainer>
     </QueryClientProvider>
   );
