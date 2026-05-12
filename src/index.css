@@ -1,8 +1,14 @@
 /* 기본 스타일 파일 (index.css) */
-body {
+html,
+body,
+#root {
+  height: 100%;
   margin: 0;
+}
+
+body {
   font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
-  background: #f8f9fa;
+  background: #f0f2f5;
 }
 
 h1 {

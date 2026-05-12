@@ -26,8 +26,8 @@
 
 .grid-container {
   background: var(--spacex-black);
-  min-height: 100vh;
-  width: 100vw;
+  min-height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
   position: relative;
@@ -42,7 +42,7 @@
   display: flex;
   background: var(--spacex-ghost-bg); /* 헤더 영역 배경색 추가 */
   position: relative; /* 표의 헤더처럼 위쪽에 위치하도록 absolute에서 변경 */
-  width: 100vw;
+  width: 100%;
   z-index: 2;
   font-family: var(--spacex-font-display);
   font-weight: 600;
@@ -114,6 +114,11 @@
   white-space: nowrap;
   text-transform: none; /* 대문자 해제 */
   box-sizing: border-box;
+  border-right: var(--spacex-ghost-border); /* 셀 오른쪽 구분선 */
+}
+
+.grid-cell:last-child {
+  border-right: none; /* 마지막 셀은 오른쪽 선 제거 */
 }
 
 /* Ghost Button (AG-Grid 내부의 액션 버튼 느낌으로 수정) */

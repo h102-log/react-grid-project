@@ -1,13 +1,14 @@
 import React from "react";
 import GridRow from "./GridRow";
-import { useGridStore } from "../store/gridStore";
+import { useColumnSort } from "../hooks/useColumnSort";
 
 const GridBody: React.FC = () => {
-  const rows = useGridStore((state) => state.rows);
+  const { sortedData } = useColumnSort();
+
   return (
     <div className="grid-body">
-      {rows.map((row, rowIndex) => (
-        <GridRow key={rowIndex} rowData={row} />
+      {sortedData.map((val, rowIndex) => (
+        <GridRow key={rowIndex} rowData={val} />
       ))}
     </div>
   );

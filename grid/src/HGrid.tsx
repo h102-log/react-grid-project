@@ -12,17 +12,17 @@ const HGrid: React.FC<GridProps> = ({ columns, data }: GridProps) => {
   // React Query 클라이언트 생성
   const queryClient = new QueryClient();
   const setColumns = useGridStore((state) => state.setColumns);
-  const setRows = useGridStore((state) => state.setRows);
+  const setData = useGridStore((state) => state.setData);
 
   // 현재 정렬진행중인 컬럼
 
   useEffect(() => {
     setColumns(columns);
     if (Array.isArray(data)) {
-      setRows(data);
+      setData(data);
     }
-    // 비동기 데이터는 별도 관리 필요 (여기선 rows만)
-  }, [columns, data, setColumns, setRows]);
+    // 비동기 데이터는 별도 관리 필요 (여기선 data만)
+  }, [columns, data, setColumns, setData]);
 
   return (
     <QueryClientProvider client={queryClient}>

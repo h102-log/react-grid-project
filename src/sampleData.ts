@@ -6,11 +6,11 @@ export const columns: Column[] = [
   { key: "name", name: "이름" },
 ];
 
-export const rows = [
-  { id: 1, name: "홍길동", age: 28 },
-  { id: 2, name: "김철수", age: 32 },
-  { id: 3, name: "이영희", age: 24 },
-];
+export const rows = Array.from({ length: 100 }, (_, i) => ({
+  id: i + 1,
+  name: `사용자 ${i + 1}`,
+  age: Math.floor(Math.random() * 60) + 20,
+}));
 
 // 대용량 데이터 예시
 export const largeData = Array.from({ length: 10000 }, (_, i) => ({
