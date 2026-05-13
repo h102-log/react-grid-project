@@ -1,9 +1,12 @@
 import type { Column } from "../grid/src/types/types";
 // 샘플 데이터 및 컬럼 정의
 export const columns: Column[] = [
-  { key: "id", name: "ID" },
-  { key: "age", name: "나이" },
-  { key: "name", name: "이름" },
+  { key: "id", name: "id", width: 200 },
+  { key: "title", name: "title", width: 200 },
+  { key: "price", name: "price", width: 200 },
+  { key: "description", name: "description", width: 200 },
+  { key: "category", name: "category", width: 200 },
+  { key: "image", name: "image", width: 200 },
 ];
 
 export const rows = Array.from({ length: 100 }, (_, i) => ({

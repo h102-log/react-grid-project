@@ -1,4 +1,3 @@
-import { useGridStore } from "../store/gridStore";
 import type { JsonValue } from "../types/types";
 
 interface GridCellProps {
@@ -16,8 +15,6 @@ const GridCell: React.FC<GridCellProps> = ({
   width,
   isLastColumn,
 }) => {
-  const dragColumn = useGridStore((state) => state.dragColumn);
-
   const displayValue =
     typeof value === "object" && value !== null
       ? JSON.stringify(value)

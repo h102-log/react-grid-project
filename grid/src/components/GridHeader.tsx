@@ -6,6 +6,7 @@ const GridHeader: React.FC = () => {
   const columns = useGridStore((state) => state.columns);
   const sortingColumn = useGridStore((state) => state.sortingColumn);
   const sortDirection = useGridStore((state) => state.sortDirection);
+  const scrollLeft = useGridStore((state) => state.scrollLeft);
 
   const { fnSetSortingColumn } = useColumnSort();
   const { mouseDown } = useColumnOrder(columns);
@@ -28,7 +29,7 @@ const GridHeader: React.FC = () => {
               onMouseDown={(e) => mouseDown(e, col.key)}
               style={{
                 position: "absolute",
-                left: `${col.left}px`,
+                left: `${col.left - scrollLeft}px`,
                 width: `${col.width}px`,
                 // 드래그 중인 컬럼이 다른 컬럼 위로 지나갈 때를 대비해 z-index 조절
                 zIndex: dragColumn === col.key ? 10 : 1,

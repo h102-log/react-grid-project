@@ -10,6 +10,8 @@ const useColumnOrder = (columns: Column[]) => {
   useEffect(() => {
     columnsRef.current = columns;
   }, [columns]);
+  const rafRef = useRef(0);
+
   // 마우스 다운 이벤트 핸들러: 드래그 시작 시 호출됩니다.
   const mouseDown = (e: React.MouseEvent, columnKey: string) => {
     if (columnKey) {
@@ -25,61 +27,66 @@ const useColumnOrder = (columns: Column[]) => {
       const headerRect = headerContainer.getBoundingClientRect();
 
       const mouseMove = (moveEvent: MouseEvent) => {
-        // 드래그 중인 마우스 좌표 업데이트
+        // 드래그 중인 마우스 좌표 업데이트 (rAF 밖에서 즉시 반영 → 모달 추적 부드럽게)
         setDragPointer({ x: moveEvent.clientX, y: moveEvent.clientY });
 
-        const currentColumns = columnsRef.current;
-        const dragIndex = currentColumns.findIndex(
-          (col) => col.key === columnKey,
-        );
+        // 컬럼 순서 계산은 rAF로 throttle → 60fps 제한
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = requestAnimationFrame(() => {
+          const currentColumns = columnsRef.current;
+          const dragIndex = currentColumns.findIndex(
+            (col) => col.key === columnKey,
+          );
 
-        if (dragIndex === -1) return;
+          if (dragIndex === -1) return;
 
-        // 마우스 X 좌표를 그리드 헤더 내부의 상대 X 좌표로 계산합니다.
-        const offsetX = moveEvent.clientX - headerRect.left;
+          // 마우스 X 좌표를 그리드 헤더 내부의 상대 X 좌표로 계산합니다.
+          const offsetX = moveEvent.clientX - headerRect.left;
 
-        let targetIndex = dragIndex;
+          let targetIndex = dragIndex;
 
-        // 💡 렌더링 된 DOM(elementFromPoint) 대신 상태 데이터(left, width)를 기준으로 판단하여 Jitter(떨림/버벅임) 현상을 완벽히 차단합니다.
-        for (let i = 0; i < currentColumns.length; i++) {
-          if (i === dragIndex) continue;
+          // 💡 렌더링 된 DOM(elementFromPoint) 대신 상태 데이터(left, width)를 기준으로 판단하여 Jitter(떨림/버벅임) 현상을 완벽히 차단합니다.
+          for (let i = 0; i < currentColumns.length; i++) {
+            if (i === dragIndex) continue;
 
-          const col = currentColumns[i];
-          const colLeft = col.left || 0;
-          const colWidth = col.width || 0;
+            const col = currentColumns[i];
+            const colLeft = col.left || 0;
+            const colWidth = col.width || 0;
 
-          if (dragIndex < i && offsetX >= colLeft) {
-            // 오른쪽으로 드래그할 때: 마우스가 대상 대상 컬럼의 **왼쪽 경계(들어가기 시작하는 영역)**를 넘어가면 타겟으로 삼음
-            targetIndex = i;
-          } else if (dragIndex > i && offsetX <= colLeft + colWidth) {
-            // 왼쪽으로 드래그할 때: 마우스가 대상 대상 컬럼의 **오른쪽 경계(들어가기 시작하는 영역)**를 지나서 타겟으로 삼음
-            targetIndex = i;
-            break; // 배열의 앞쪽부터 탐색하므로 닿는 순간 멈춤
+            if (dragIndex < i && offsetX >= colLeft) {
+              // 오른쪽으로 드래그할 때: 마우스가 대상 대상 컬럼의 **왼쪽 경계(들어가기 시작하는 영역)**를 넘어가면 타겟으로 삼음
+              targetIndex = i;
+            } else if (dragIndex > i && offsetX <= colLeft + colWidth) {
+              // 왼쪽으로 드래그할 때: 마우스가 대상 대상 컬럼의 **오른쪽 경계(들어가기 시작하는 영역)**를 지나서 타겟으로 삼음
+              targetIndex = i;
+              break; // 배열의 앞쪽부터 탐색하므로 닿는 순간 멈춤
+            }
           }
-        }
 
-        if (targetIndex !== dragIndex) {
-          const newColumns = [...currentColumns];
+          if (targetIndex !== dragIndex) {
+            const newColumns = [...currentColumns];
 
-          // 1:1 교체(Swap)가 아닌, 해당 위치로 삽입하고 나머지를 밀어냅니다
-          const [draggedItem] = newColumns.splice(dragIndex, 1);
-          newColumns.splice(targetIndex, 0, draggedItem);
+            // 1:1 교체(Swap)가 아닌, 해당 위치로 삽입하고 나머지를 밀어냅니다
+            const [draggedItem] = newColumns.splice(dragIndex, 1);
+            newColumns.splice(targetIndex, 0, draggedItem);
 
-          // 💡 애니메이션을 위해 left 좌표를 새 순서에 맞게 재계산합니다.
-          let currentLeft = 0;
-          const recalculatedColumns = newColumns.map((col) => {
-            const updatedCol = { ...col, left: currentLeft };
-            currentLeft += col.width || 0;
-            return updatedCol;
-          });
+            // 💡 애니메이션을 위해 left 좌표를 새 순서에 맞게 재계산합니다.
+            let currentLeft = 0;
+            const recalculatedColumns = newColumns.map((col) => {
+              const updatedCol = { ...col, left: currentLeft };
+              currentLeft += col.width || 0;
+              return updatedCol;
+            });
 
-          // 상태를 업데이트하면 HGrid에서 left 값을 즉시 재계산합니다.
-          setColumns(recalculatedColumns);
-        }
+            // 상태를 업데이트하면 HGrid에서 left 값을 즉시 재계산합니다.
+            setColumns(recalculatedColumns);
+          }
+        }); // rAF 닫기
       };
 
       const mouseUp = () => {
         // 드래그 종료 시 상태 초기화
+        cancelAnimationFrame(rafRef.current);
         setDragColumn("");
         setDragPointer(null);
         document.removeEventListener("mousemove", mouseMove);

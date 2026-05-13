@@ -1,7 +1,35 @@
 import "./App.css";
 import HGrid from "../grid/src/HGrid";
 import useAddRow from "../grid/src/hooks/useAddRow";
-import { columns, rows } from "./sampleData";
+import { columns } from "./sampleData";
+import type { RowData } from "../grid/src/types/types";
+
+const API_URL = "https://fakestoreapi.com/products";
+
+const fetchFromServer = async (
+  startIndex: number,
+  endIndex: number,
+): Promise<RowData[]> => {
+  // GET 요청은 body를 사용할 수 없으므로 쿼리 파라미터로 전달합니다.
+  const url = new URL(API_URL);
+  url.searchParams.set("limit", String(endIndex - startIndex));
+  url.searchParams.set("offset", String(startIndex));
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (!response.ok) {
+    throw new Error(`서버 오류: ${response.status} ${response.statusText}`);
+  }
+
+  const json = await response.json();
+
+  // 서버가 { data: [...] } 혹은 배열 자체를 반환하는 두 가지 케이스를 처리합니다.
+  const rows: RowData[] = Array.isArray(json) ? json : (json.data ?? []);
+  return rows;
+};
 
 // src/App.tsx
 function App() {
@@ -82,7 +110,13 @@ function App() {
 
         {/* 그리드 렌더링 영역 */}
         <div style={{ flex: 1, overflow: "hidden" }}>
-          <HGrid columns={columns} data={rows} />
+          <HGrid
+            columns={columns}
+            data={[]}
+            onFetchData={fetchFromServer}
+            startIndex={0}
+            endIndex={50}
+          />
         </div>
       </div>
     </div>

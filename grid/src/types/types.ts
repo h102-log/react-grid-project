@@ -37,6 +37,9 @@ export type GridData =
 export interface GridProps<T = Record<string, JsonValue>> {
   columns: Column[];
   data: GridData;
+  onFetchData?: (startIndex: number, endIndex: number) => Promise<T[]>; // 검색 콜백 함수
+  startIndex?: number; // 데이터 패칭 시작 인덱스 (선택 사항)
+  endIndex?: number; // 데이터 패칭 종료 인덱스 (선택 사항)
   totalCount?: number;
   // --- AI 연동 옵션  ---
   apiKey?: string | ((query: string, contextData: T[]) => Promise<string>); // 상용 배포용 커스텀 콜백 함수
