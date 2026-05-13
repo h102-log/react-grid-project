@@ -34,7 +34,7 @@ const GridHeader: React.FC = () => {
                 // 드래그 중인 컬럼이 다른 컬럼 위로 지나갈 때를 대비해 z-index 조절
                 zIndex: dragColumn === col.key ? 10 : 1,
                 // 이전 답변에서 추가했던 부드러운 이동 효과
-                transition: "left 0.2s ease-in-out",
+                /*transition: "left 0.2s ease-in-out",*/
               }}
             >
               {col.name}
