@@ -26,7 +26,7 @@
 **Files:** grid/src/components/GridContainer.tsx, grid/src/components/GridBody.tsx, grid/src/components/GridRow.tsx
 **What:**
 
-- "행 추가" 버튼 및 핸들러 구현
+- "행 추가" 버튼 및 핸들러 구현해
 - 새 행 객체 생성 및 상태에 추가, key 관리
 - GridBody/Row/Cell이 새 행을 정상적으로 렌더링하는지 확인
   **Testing:**
