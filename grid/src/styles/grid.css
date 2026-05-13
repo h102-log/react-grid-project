@@ -1,5 +1,4 @@
 :root {
-  /* 변수명은 그대로 유지하되, AG-Grid 스타일에 맞게 값을 변경했습니다. */
   --spacex-black: #ffffff; /* 그리드 배경 (White) */
   --spacex-white: #181d1f; /* 텍스트 색상 (Dark Gray) */
   --spacex-ghost-bg: #f8f8f8; /* 헤더 및 버튼 배경 (Light Gray) */
@@ -39,41 +38,52 @@
 }
 
 .grid-header {
-  display: flex;
-  background: var(--spacex-ghost-bg); /* 헤더 영역 배경색 추가 */
-  position: relative; /* 표의 헤더처럼 위쪽에 위치하도록 absolute에서 변경 */
+  /* display: flex; <-- 삭제 */
+  display: block; /* Flex 해제 */
+  position: relative; /* 자식 요소들의 absolute 기준점 */
+  height: 40px; /* 💡 필수: absolute 자식들을 품기 위한 높이 지정 */
   width: 100%;
   z-index: 2;
+  background: var(--spacex-ghost-bg);
   font-family: var(--spacex-font-display);
   font-weight: 600;
   font-size: var(--spacex-nav-size);
   letter-spacing: var(--spacex-nav-spacing);
-  text-transform: none; /* 대문자 해제 */
+  text-transform: none;
   color: var(--spacex-white);
   padding: 0;
   user-select: none;
-  border-bottom: var(--spacex-ghost-border); /* 헤더 하단 구분선 */
+  border-bottom: var(--spacex-ghost-border);
 }
 
 .grid-header-cell {
-  flex: 1 1 0;
+  /* flex: 1 1 0; <-- 삭제 */
+  position: absolute; /* 💡 필수: React 인라인 스타일과 호흡을 맞춤 */
+  top: 0;
+  height: 100%; /* 부모(grid-header)의 높이를 꽉 채움 */
+  display: flex; /* 글자를 가운데 정렬하기 위해 내부적으로만 flex 사용 */
+  align-items: center;
   background: transparent;
   border: none;
-  border-right: var(--spacex-ghost-border); /* 헤더 컬럼 간의 구분선 */
+  border-right: var(--spacex-ghost-border);
   color: var(--spacex-white);
   font-family: var(--spacex-font-display);
   font-weight: 600;
   font-size: var(--spacex-nav-size);
   letter-spacing: var(--spacex-nav-spacing);
-  text-transform: none; /* 대문자 해제 */
+  text-transform: none;
   text-align: left;
-  padding: var(--spacex-spacing-base) var(--spacex-spacing-lg);
+  padding: 0 var(--spacex-spacing-lg); /* 위아래 패딩 대신 flex 정렬 사용 추천 */
   white-space: nowrap;
   box-sizing: border-box;
+  transition:
+    left 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.15s linear; /* 속도를 약간 빠르게 수정 */
 }
 
-.grid-header-cell:last-child {
-  border-right: none; /* 마지막 헤더 셀은 우측 선 제거 */
+/* :last-child 대신 .last-column 클래스를 사용해 논리적으로 마지막 열의 보더를 지웁니다 */
+.grid-header-cell.last-column {
+  border-right: none;
 }
 
 .grid-body {
@@ -87,9 +97,12 @@
 }
 
 .grid-row {
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #dde2eb; /* 행(Row) 하단 구분선 */
+  /* display: flex; <-- 삭제 */
+  /* align-items: center; <-- 삭제 */
+  display: block; /* Flex 해제 */
+  position: relative; /* 자식 요소들의 absolute 기준점 */
+  height: 40px; /* 💡 필수: absolute 자식들을 품기 위한 높이 지정 */
+  border-bottom: 1px solid #dde2eb;
   background: var(--spacex-black);
   transition: background-color 0.1s ease;
 }
@@ -99,26 +112,33 @@
 }
 
 .grid-cell {
-  flex: 1 1 0;
-  padding: var(--spacex-spacing-base) var(--spacex-spacing-lg);
+  /* flex: 1 1 0; <-- 삭제 */
+  position: absolute; /* 💡 필수 */
+  top: 0;
+  height: 100%; /* 부모(grid-row)의 높이를 꽉 채움 */
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacex-spacing-lg);
   color: var(--spacex-white);
   font-family: var(--spacex-font-body);
   font-size: var(--spacex-body-size);
   letter-spacing: normal;
   background: transparent;
-  display: flex;
-  align-items: center;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  text-transform: none; /* 대문자 해제 */
+  text-transform: none;
   box-sizing: border-box;
-  border-right: var(--spacex-ghost-border); /* 셀 오른쪽 구분선 */
+  border-right: var(--spacex-ghost-border);
+  transition:
+    left 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.15s linear;
 }
 
-.grid-cell:last-child {
-  border-right: none; /* 마지막 셀은 오른쪽 선 제거 */
+/* :last-child 대신 .last-column 클래스를 사용해 논리적으로 마지막 열의 보더를 지웁니다 */
+.grid-cell.last-column {
+  border-right: none;
 }
 
 /* Ghost Button (AG-Grid 내부의 액션 버튼 느낌으로 수정) */
@@ -162,20 +182,29 @@
 /* Header Modal (컬럼 드래그 시 나타나는 모달 스타일) */
 .header-modal {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
   background: #fff;
   border: 1px solid #babfc7;
   border-radius: 4px;
-  padding: 12px 20px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  padding: 8px 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
   z-index: 1000;
-  font-size: 13px;
+  min-width: 120px;
+  font-size: 12px;
   color: #181d1f;
   pointer-events: none; /* 드래그 중 모달이 마우스 이벤트를 가로채지 않도록 */
+  white-space: nowrap;
 }
 
+.header-modal-title {
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.header-modal-meta {
+  color: #5d6670;
+}
 /* Responsive: Mobile */
 @media (max-width: 600px) {
   .grid-header {

@@ -3,38 +3,52 @@ import { useColumnSort } from "../hooks/useColumnSort";
 import { useColumnOrder } from "../hooks/useColumnOrder";
 
 const GridHeader: React.FC = () => {
-  const columns = useGridStore((state) => state.columns); // 컬럼 정보 가져오기
-  const sortingColumn = useGridStore((state) => state.sortingColumn); // 현재 정렬 중인 컬럼 키 가져오기
-  const sortDirection = useGridStore((state) => state.sortDirection); // 현재 정렬 방향 가져오기
-  const { fnSetSortingColumn } = useColumnSort(); // 정렬 관련 함수 가져오기
-  const { fnSetDraggingColumn } = useColumnOrder(); // 컬럼 순서 관련 함수 가져오기
+  const columns = useGridStore((state) => state.columns);
+  const sortingColumn = useGridStore((state) => state.sortingColumn);
+  const sortDirection = useGridStore((state) => state.sortDirection);
+
+  const { fnSetSortingColumn } = useColumnSort();
+  const { mouseDown } = useColumnOrder(columns);
+  const dragColumn = useGridStore((state) => state.dragColumn);
+
   return (
     <div className="grid-header">
-      {columns.map((col) => (
-        <div
-          key={col.key}
-          data-column-key={col.key}
-          className="grid-header-cell"
-          onClick={() => {
-            fnSetSortingColumn(col.key); // 클릭한 컬럼을 정렬 중인 컬럼으로 설정
-          }}
-          onMouseDown={(e) => fnSetDraggingColumn(e, col.key)}
-        >
-          {/* 2. div 태그를 닫는 괄호(>) 추가 */}
-          {col.name}
-          {/* 정렬 아이콘 등 추가 가능 */}
-          {sortingColumn === col.key && (
-            // 정렬 아이콘 표시 (예: ▲ 또는 ▼)
-            <span>
-              {sortDirection === "asc"
-                ? "▲"
-                : sortDirection === "desc"
-                  ? "▼"
-                  : ""}
-            </span>
-          )}
-        </div>
-      ))}
+      {[...columns]
+        .sort((a, b) => a.key.localeCompare(b.key))
+        .map((col) => {
+          // 논리적으로 가장 마지막 위치(배열의 맨 끝)인지 판별
+          const isLastColumn = columns[columns.length - 1].key === col.key;
+
+          return (
+            <div
+              key={col.key}
+              data-column-key={col.key}
+              className={`grid-header-cell ${isLastColumn ? "last-column" : ""}`}
+              onClick={() => fnSetSortingColumn(col.key)}
+              onMouseDown={(e) => mouseDown(e, col.key)}
+              style={{
+                position: "absolute",
+                left: `${col.left}px`,
+                width: `${col.width}px`,
+                // 드래그 중인 컬럼이 다른 컬럼 위로 지나갈 때를 대비해 z-index 조절
+                zIndex: dragColumn === col.key ? 10 : 1,
+                // 이전 답변에서 추가했던 부드러운 이동 효과
+                transition: "left 0.2s ease-in-out",
+              }}
+            >
+              {col.name}
+              {sortingColumn === col.key && (
+                <span>
+                  {sortDirection === "asc"
+                    ? "▲"
+                    : sortDirection === "desc"
+                      ? "▼"
+                      : ""}
+                </span>
+              )}
+            </div>
+          );
+        })}
     </div>
   );
 };

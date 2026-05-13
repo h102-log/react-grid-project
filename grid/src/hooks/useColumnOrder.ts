@@ -1,62 +1,97 @@
+import { useEffect, useRef } from "react";
 import { useGridStore } from "../store/gridStore";
-export const useColumnOrder = () => {
-  const {
-    setIsDraggingColumn,
-    isDraggingColumn,
-    setColumns,
-    setDragPosition,
-    columns,
-  } = useGridStore();
+import type { Column } from "../types/types";
 
-  // 마우스 무브 시 드래그 중인 컬럼이 있다면 위치 업데이트
-  const fnSetDraggingColumn = (
-    e: React.MouseEvent<HTMLDivElement>,
-    columnKey: string,
-  ) => {
-    e.preventDefault();
-    setIsDraggingColumn(columnKey);
-    setDragPosition({ x: e.clientX, y: e.clientY }); // 시작 좌표
+// 마우스 드래그로 열 순서를 변경할 때, 열의 순서를 관리하는 훅입니다.
+const useColumnOrder = (columns: Column[]) => {
+  const { setDragPointer, setDragColumn, setColumns } = useGridStore();
+
+  const columnsRef = useRef(columns);
+  useEffect(() => {
+    columnsRef.current = columns;
+  }, [columns]);
+  // 마우스 다운 이벤트 핸들러: 드래그 시작 시 호출됩니다.
+  const mouseDown = (e: React.MouseEvent, columnKey: string) => {
+    if (columnKey) {
+      setDragColumn(columnKey);
+      setDragPointer({ x: e.clientX, y: e.clientY });
+
+      // 드래그가 시작된 그리드 헤더 영역의 위치를 기억합니다.
+      const headerContainer = (e.currentTarget as HTMLElement).closest(
+        ".grid-header",
+      );
+      if (!headerContainer) return;
+
+      const headerRect = headerContainer.getBoundingClientRect();
+
+      const mouseMove = (moveEvent: MouseEvent) => {
+        // 드래그 중인 마우스 좌표 업데이트
+        setDragPointer({ x: moveEvent.clientX, y: moveEvent.clientY });
+
+        const currentColumns = columnsRef.current;
+        const dragIndex = currentColumns.findIndex(
+          (col) => col.key === columnKey,
+        );
+
+        if (dragIndex === -1) return;
+
+        // 마우스 X 좌표를 그리드 헤더 내부의 상대 X 좌표로 계산합니다.
+        const offsetX = moveEvent.clientX - headerRect.left;
+
+        let targetIndex = dragIndex;
+
+        // 💡 렌더링 된 DOM(elementFromPoint) 대신 상태 데이터(left, width)를 기준으로 판단하여 Jitter(떨림/버벅임) 현상을 완벽히 차단합니다.
+        for (let i = 0; i < currentColumns.length; i++) {
+          if (i === dragIndex) continue;
+
+          const col = currentColumns[i];
+          const colLeft = col.left || 0;
+          const colWidth = col.width || 0;
+
+          if (dragIndex < i && offsetX >= colLeft) {
+            // 오른쪽으로 드래그할 때: 마우스가 대상 대상 컬럼의 **왼쪽 경계(들어가기 시작하는 영역)**를 넘어가면 타겟으로 삼음
+            targetIndex = i;
+          } else if (dragIndex > i && offsetX <= colLeft + colWidth) {
+            // 왼쪽으로 드래그할 때: 마우스가 대상 대상 컬럼의 **오른쪽 경계(들어가기 시작하는 영역)**를 지나서 타겟으로 삼음
+            targetIndex = i;
+            break; // 배열의 앞쪽부터 탐색하므로 닿는 순간 멈춤
+          }
+        }
+
+        if (targetIndex !== dragIndex) {
+          const newColumns = [...currentColumns];
+
+          // 1:1 교체(Swap)가 아닌, 해당 위치로 삽입하고 나머지를 밀어냅니다
+          const [draggedItem] = newColumns.splice(dragIndex, 1);
+          newColumns.splice(targetIndex, 0, draggedItem);
+
+          // 💡 애니메이션을 위해 left 좌표를 새 순서에 맞게 재계산합니다.
+          let currentLeft = 0;
+          const recalculatedColumns = newColumns.map((col) => {
+            const updatedCol = { ...col, left: currentLeft };
+            currentLeft += col.width || 0;
+            return updatedCol;
+          });
+
+          // 상태를 업데이트하면 HGrid에서 left 값을 즉시 재계산합니다.
+          setColumns(recalculatedColumns);
+        }
+      };
+
+      const mouseUp = () => {
+        // 드래그 종료 시 상태 초기화
+        setDragColumn("");
+        setDragPointer(null);
+        document.removeEventListener("mousemove", mouseMove);
+        document.removeEventListener("mouseup", mouseUp);
+      };
+
+      document.addEventListener("mousemove", mouseMove);
+      document.addEventListener("mouseup", mouseUp);
+    }
   };
 
-  const fnUpdateColumnOrder = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDraggingColumn) return;
-
-    setDragPosition({ x: e.clientX, y: e.clientY }); // 이동 중 좌표
-
-    // 기존 컬럼 reorder 로직 유지
-    const target = document.elementFromPoint(
-      e.clientX,
-      e.clientY,
-    ) as HTMLElement;
-    const targetKey = target
-      ?.closest("[data-column-key]")
-      ?.getAttribute("data-column-key");
-    if (!targetKey || targetKey === isDraggingColumn) return;
-
-    const currentColumns = columns;
-    const fromIndex = currentColumns.findIndex(
-      (col) => col.key === isDraggingColumn,
-    );
-    const toIndex = currentColumns.findIndex((col) => col.key === targetKey);
-    if (fromIndex === -1 || toIndex === -1) return;
-
-    const newColumns = [...currentColumns];
-    const [moved] = newColumns.splice(fromIndex, 1);
-    newColumns.splice(toIndex, 0, moved);
-    setColumns(newColumns);
-  };
-
-  const fnEndDraggingColumn = () => {
-    if (!isDraggingColumn) return;
-    setIsDraggingColumn("");
-    setDragPosition({ x: 0, y: 0 }); // 초기화
-  };
-
-  return {
-    fnSetDraggingColumn,
-    fnUpdateColumnOrder,
-    fnEndDraggingColumn,
-  };
+  return { mouseDown };
 };
 
-export default useColumnOrder;
+export { useColumnOrder };

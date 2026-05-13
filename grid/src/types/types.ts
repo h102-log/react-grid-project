@@ -9,6 +9,7 @@ export interface Column {
 
   // 선택사항
   width?: number; //컬럼의 너비 (선택 사항)
+  left?: number; //컬럼의 왼쪽 위치 (선택 사항)
   readOnly?: boolean; //컬럼이 읽기 전용인지 여부 (선택 사항)
   cellRenderer?: (value: GridData, rowIndex: number) => React.ReactNode; //셀 렌더러 함수 (선택 사항)
   sortable?: boolean; //컬럼이 정렬 가능한지 여부 (선택 사항)

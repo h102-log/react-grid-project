@@ -1,4 +1,4 @@
-import type { Column } from "./grid/src/types/types";
+import type { Column } from "../grid/src/types/types";
 // 샘플 데이터 및 컬럼 정의
 export const columns: Column[] = [
   { key: "id", name: "ID" },
