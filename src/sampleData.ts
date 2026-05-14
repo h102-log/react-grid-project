@@ -2,7 +2,7 @@ import type { Column } from "../grid/src/types/types";
 // 샘플 데이터 및 컬럼 정의
 export const columns: Column[] = [
   { key: "id", name: "id", width: 200 },
-  { key: "title", name: "title", width: 200 },
+  { key: "title", name: "title", width: 200, readOnly: true },
   { key: "price", name: "price", width: 200 },
   { key: "description", name: "description", width: 200 },
   { key: "category", name: "category", width: 200 },

@@ -97,7 +97,6 @@ const useColumnOrder = (columns: Column[]) => {
           const dragIndex = currentColumns.findIndex(
             (col) => col.key === columnKey,
           );
-
           if (dragIndex === -1) return;
 
           // 마우스 X 좌표를 그리드 헤더 내부의 상대 X 좌표로 계산합니다.
