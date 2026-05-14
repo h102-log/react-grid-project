@@ -23,6 +23,8 @@ const HeaderDragModal: React.FC<HeaderDragModalProps> = ({ containerRef }) => {
     [columns, dragColumn],
   );
 
+  const [position, setPosition] = useState({ left: 0, top: 0 });
+
   useLayoutEffect(() => {
     if (!modalRef.current) return;
 
@@ -35,26 +37,44 @@ const HeaderDragModal: React.FC<HeaderDragModalProps> = ({ containerRef }) => {
     });
   }, [activeColumn?.name, dragColumn]);
 
+  useLayoutEffect(() => {
+    if (!dragPointer || !dragColumn || !activeColumn) {
+      return;
+    }
+
+    const containerRect = containerRef.current?.getBoundingClientRect();
+    const offset = 12;
+    const edgeGap = 8;
+
+    let nextLeft = dragPointer.x + offset;
+    let nextTop = dragPointer.y + offset;
+
+    if (containerRect) {
+      const minLeft = containerRect.left + edgeGap;
+      const maxLeft = containerRect.right - modalSize.width - edgeGap;
+      const minTop = containerRect.top + edgeGap;
+      const maxTop = containerRect.bottom - modalSize.height - edgeGap;
+
+      nextLeft = clamp(nextLeft, minLeft, maxLeft);
+      nextTop = clamp(nextTop, minTop, maxTop);
+    }
+
+    setPosition({ left: nextLeft, top: nextTop });
+  }, [
+    dragPointer,
+    dragColumn,
+    activeColumn,
+    modalSize.width,
+    modalSize.height,
+    containerRef,
+  ]);
+
   if (!dragPointer || !dragColumn || !activeColumn) {
     return null;
   }
 
-  const containerRect = containerRef.current?.getBoundingClientRect();
-  const offset = 12;
-  const edgeGap = 8;
-
-  let nextLeft = dragPointer.x + offset;
-  let nextTop = dragPointer.y + offset;
-
-  if (containerRect) {
-    const minLeft = containerRect.left + edgeGap;
-    const maxLeft = containerRect.right - modalSize.width - edgeGap;
-    const minTop = containerRect.top + edgeGap;
-    const maxTop = containerRect.bottom - modalSize.height - edgeGap;
-
-    nextLeft = clamp(nextLeft, minLeft, maxLeft);
-    nextTop = clamp(nextTop, minTop, maxTop);
-  }
+  const nextLeft = position.left;
+  const nextTop = position.top;
 
   return (
     <div
@@ -66,7 +86,6 @@ const HeaderDragModal: React.FC<HeaderDragModalProps> = ({ containerRef }) => {
       }}
     >
       <div className="header-modal-title">{activeColumn.name}</div>
-      <div className="header-modal-meta">컬럼 이동 중</div>
     </div>
   );
 };

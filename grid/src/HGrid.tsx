@@ -4,6 +4,7 @@ import GridContainer from "./components/GridContainer";
 import GridHeader from "./components/GridHeader";
 import GridBody from "./components/GridBody";
 import HeaderDragModal from "./components/HeaderDragModal";
+import LoadingModal from "./components/LodingModal";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./styles/grid.css";
 import { useGridStore } from "./store/gridStore";
@@ -151,6 +152,7 @@ const HGrid: React.FC<GridProps> = ({
           <GridBody />
         </GridContainer>
         <HeaderDragModal containerRef={gridContainerRef} />
+        {isFetching && <LoadingModal />}
       </div>
     </QueryClientProvider>
   );

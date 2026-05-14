@@ -209,6 +209,32 @@
 .header-modal-meta {
   color: #5d6670;
 }
+
+.loading-bar {
+  padding: 12px 24px;
+  background-color: var(--spacex-black);
+  color: var(--spacex-white);
+  font-family: var(--spacex-font-display);
+  font-size: var(--spacex-body-size);
+  border: var(--spacex-ghost-border);
+  border-radius: var(--spacex-radius-btn);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  /* 부드럽게 깜빡이는 애니메이션 효과 */
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
 /* Responsive: Mobile */
 @media (max-width: 600px) {
   .grid-header {
