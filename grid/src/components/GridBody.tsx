@@ -16,7 +16,6 @@ const GridBody: React.FC = () => {
     getScrollElement: () => parentRef.current,
     estimateSize: () => ROW_HEIGHT,
     overscan: 10,
-    getItemKey: (index) => String(sortedData[index]?.id ?? index),
   });
 
   useEffect(() => {
@@ -40,23 +39,33 @@ const GridBody: React.FC = () => {
           position: "relative",
         }}
       >
-        {rowVirtualizer.getVirtualItems().map((virtualRow) => (
-          <div
-            key={virtualRow.key}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: `${virtualRow.size}px`,
-              transform: `translateY(${virtualRow.start}px)`,
-              transition: "transform 260ms cubic-bezier(0.22, 1, 0.36, 1)",
-              willChange: "transform",
-            }}
-          >
-            <GridRow rowData={sortedData[virtualRow.index]} />
-          </div>
-        ))}
+        {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+          // 1. 현재 인덱스의 데이터 가져오기
+          const rowData = sortedData[virtualRow.index];
+
+          // 2. TypeScript 에러 해결: rowData.id가 존재하면 String()을 통해 안전하게 문자로 변환
+          // (만약 데이터에 id라는 고유 식별자가 없다면 데이터가 가진 고유한 다른 필드명으로 교체하세요)
+          const rowKey = rowData.id ? String(rowData.id) : virtualRow.index;
+
+          return (
+            <div
+              key={rowKey}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: `${virtualRow.size}px`,
+                transform: `translateY(${virtualRow.start}px)`,
+                // 3. Transform 기반 애니메이션 추가 (행 자체가 위아래로 부드럽게 이동)
+                transition: "transform 0.4s cubic-bezier(0.1, 0.7, 0.1, 1)",
+                willChange: "transform", // 애니메이션 성능 최적화
+              }}
+            >
+              <GridRow rowData={rowData} />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
