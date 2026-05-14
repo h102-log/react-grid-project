@@ -11,7 +11,6 @@ const GridRow: React.FC<GridRowProps> = ({ rowData }) => {
   return (
     <div className="grid-row" style={{ position: "relative", height: "40px" }}>
       {" "}
-      {/* 높이는 예시입니다 */}
       {[...columns]
         .sort((a, b) => a.key.localeCompare(b.key))
         .map((col) => {

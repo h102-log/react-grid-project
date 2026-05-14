@@ -53,28 +53,29 @@ const HGrid: React.FC<GridProps> = ({
   const dataSource =
     onFetchData ?? (typeof data === "function" ? data : undefined);
 
-  const fetchData = useCallback(async () => {
-    if (isFetching || !hasMore || !dataSource) return;
+  const isFetchingRef = useRef(false);
 
+  const fetchData = useCallback(async () => {
+    if (isFetchingRef.current || !hasMore || !dataSource) return;
+
+    isFetchingRef.current = true;
     setIsFetching(true);
 
     try {
       const newData = await dataSource(startIndex, endIndex);
-
       if (newData.length === 0) {
         setHasMore(false);
         return;
       }
-
       const currentData = useGridStore.getState().data;
       setData([...currentData, ...newData]);
     } catch (error) {
       console.error("데이터 패칭 중 오류 발생:", error);
     } finally {
+      isFetchingRef.current = false;
       setIsFetching(false);
     }
-  }, [dataSource, endIndex, hasMore, isFetching, setData, startIndex]);
-
+  }, [dataSource, endIndex, hasMore, setData, startIndex]); // ← isFetching 제거
   // 3. 측정된 containerWidth를 바탕으로 컬럼 너비와 left를 계산합니다.
   useEffect(() => {
     // 너비 측정이 아직 안 끝났다면 계산을 잠시 보류합니다.
@@ -126,23 +127,25 @@ const HGrid: React.FC<GridProps> = ({
     setColumns(columnsWithLeft);
   }, [columns, containerWidth, setColumns]);
 
+  // 초기 데이터 로드 (한 번만)
   useEffect(() => {
-    // dataSource(onFetchData 또는 함수형 data)가 있으면 fetch를 우선합니다.
-    // data가 빈 배열([])이어도 dataSource가 있으면 fetch로 처리합니다.
     if (dataSource) {
-      const timer = window.setTimeout(() => {
-        void fetchData();
-      }, 0);
-
+      const timer = window.setTimeout(() => void fetchData(), 0);
       return () => window.clearTimeout(timer);
     }
+  }, [dataSource, fetchData]); // fetchData 의존성 유지, 대신 정의 개선
 
-    // dataSource가 없을 때만 배열 데이터를 직접 사용합니다.
-    if (Array.isArray(data)) {
-      setData(data);
+  // 배열 데이터 처리
+  useEffect(() => {
+    if (!dataSource && Array.isArray(data) && data.length > 0) {
+      const timer = window.setTimeout(() => {
+        setIsFetching(true);
+        setData(data);
+        setIsFetching(false);
+      }, 0);
+      return () => window.clearTimeout(timer);
     }
-  }, [data, dataSource, fetchData, setData]);
-
+  }, [data, dataSource, setData]);
   return (
     <QueryClientProvider client={queryClient}>
       {/* 측정할 수 있도록 ref를 연결해 줍니다. GridContainer가 div를 반환한다고 가정했습니다. */}

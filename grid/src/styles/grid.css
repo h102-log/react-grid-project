@@ -101,11 +101,10 @@
 }
 
 .grid-row {
-  /* display: flex; <-- 삭제 */
-  /* align-items: center; <-- 삭제 */
   display: block; /* Flex 해제 */
   position: relative; /* 자식 요소들의 absolute 기준점 */
   height: 40px; /* 💡 필수: absolute 자식들을 품기 위한 높이 지정 */
+  box-sizing: border-box;
   border-bottom: 1px solid #dde2eb;
   background: var(--spacex-black);
   transition: background-color 0.1s ease;

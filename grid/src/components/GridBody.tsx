@@ -16,6 +16,7 @@ const GridBody: React.FC = () => {
     getScrollElement: () => parentRef.current,
     estimateSize: () => ROW_HEIGHT,
     overscan: 10,
+    getItemKey: (index) => String(sortedData[index]?.id ?? index),
   });
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const GridBody: React.FC = () => {
       >
         {rowVirtualizer.getVirtualItems().map((virtualRow) => (
           <div
-            key={virtualRow.index}
+            key={virtualRow.key}
             style={{
               position: "absolute",
               top: 0,
@@ -49,6 +50,8 @@ const GridBody: React.FC = () => {
               width: "100%",
               height: `${virtualRow.size}px`,
               transform: `translateY(${virtualRow.start}px)`,
+              transition: "transform 260ms cubic-bezier(0.22, 1, 0.36, 1)",
+              willChange: "transform",
             }}
           >
             <GridRow rowData={sortedData[virtualRow.index]} />

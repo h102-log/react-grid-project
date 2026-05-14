@@ -1,7 +1,7 @@
 import "./App.css";
 import HGrid from "../grid/src/HGrid";
 import useAddRow from "../grid/src/hooks/useAddRow";
-import { columns } from "./sampleData";
+import { columns, largeColumns, largeData } from "./sampleData";
 import type { RowData } from "../grid/src/types/types";
 
 const API_URL = "https://fakestoreapi.com/products";
@@ -111,11 +111,13 @@ function App() {
         {/* 그리드 렌더링 영역 */}
         <div style={{ flex: 1, overflow: "hidden" }}>
           <HGrid
+            /*columns={largeColumns}*/
             columns={columns}
-            data={[]}
+            data={largeData}
             onFetchData={fetchFromServer}
+            /*onFetchData={fetchFromServer}*/
             startIndex={0}
-            endIndex={50}
+            endIndex={1000}
           />
         </div>
       </div>
