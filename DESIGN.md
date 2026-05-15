@@ -1,194 +1,501 @@
-# Design System Inspired by SpaceX
+---
+version: alpha
+name: xAI-design-analysis
+description: An inspired interpretation of xAI's design language — Elon Musk's frontier-AI company whose web surface is a strict near-black canvas broken only by white pill outlines, occasional warm sunset / dusk gradient accents, a custom geometric sans (Universal Sans) for display, and an uppercase tracked monospace caption face; the whole system reads as engineered-cosmic, unmarketed.
 
-## 1. Visual Theme & Atmosphere
+colors:
+  primary: "#ffffff"
+  on-primary: "#0a0a0a"
+  ink: "#ffffff"
+  ink-hover: "#fafaf7"
+  body: "#dadbdf"
+  body-mid: "#7d8187"
+  mute: "#7d8187"
+  hairline: "#212327"
+  canvas: "#0a0a0a"
+  canvas-soft: "#1a1c20"
+  canvas-card: "#191919"
+  canvas-mid: "#363a3f"
+  accent-sunset: "#ff7a17"
+  accent-sunset-soft: "#ffc285"
+  accent-dusk: "#7c3aed"
+  accent-twilight: "#c4b5fd"
+  accent-breeze: "#a0c3ec"
+  accent-midnight: "#0d1726"
 
-SpaceX's website is a full-screen cinematic experience that treats aerospace engineering like a film — every section is a scene, every photograph is a frame, and the interface disappears entirely behind the imagery. The design is pure black (`#000000`) with photography of rockets, space, and planets occupying 100% of the viewport. Text overlays sit directly on these photographs with no background panels, cards, or containers — just type on image, bold and unapologetic.
+typography:
+  display-xl:
+    fontFamily: universalSans, Inter, system-ui, -apple-system, sans-serif
+    fontSize: 96px
+    fontWeight: 400
+    lineHeight: 96px
+    letterSpacing: -2.4px
+  display-lg:
+    fontFamily: universalSans, Inter, system-ui, sans-serif
+    fontSize: 72px
+    fontWeight: 400
+    lineHeight: 72px
+    letterSpacing: -1.8px
+  display-md:
+    fontFamily: universalSans, Inter, system-ui, sans-serif
+    fontSize: 48px
+    fontWeight: 400
+    lineHeight: 48px
+    letterSpacing: -1.2px
+  display-sm:
+    fontFamily: universalSans, Inter, system-ui, sans-serif
+    fontSize: 32px
+    fontWeight: 400
+    lineHeight: 36px
+    letterSpacing: -0.6px
+  display-xs:
+    fontFamily: universalSans, Inter, system-ui, sans-serif
+    fontSize: 20px
+    fontWeight: 400
+    lineHeight: 28px
+  body-lg:
+    fontFamily: universalSans, Inter, system-ui, sans-serif
+    fontSize: 18px
+    fontWeight: 400
+    lineHeight: 28px
+  body-md:
+    fontFamily: universalSans, Inter, system-ui, sans-serif
+    fontSize: 16px
+    fontWeight: 400
+    lineHeight: 24px
+  body-sm:
+    fontFamily: universalSans, Inter, system-ui, sans-serif
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 20px
+  caption-mono:
+    fontFamily: GeistMono, ui-monospace, SFMono-Regular, Menlo, Monaco, monospace
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 20px
+    letterSpacing: 1.4px
+  caption-mono-sm:
+    fontFamily: GeistMono, ui-monospace, SFMono-Regular, Menlo, monospace
+    fontSize: 12px
+    fontWeight: 400
+    lineHeight: 16px
+    letterSpacing: 1.2px
+  button-md:
+    fontFamily: universalSans, Inter, system-ui, sans-serif
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 20px
 
-The typography system uses D-DIN, an industrial geometric typeface with DIN heritage (the German industrial standard). The defining characteristic is that virtually ALL text is uppercase with positive letter-spacing (0.96px–1.17px), creating a military/aerospace labeling system where every word feels stenciled onto a spacecraft hull. D-DIN-Bold at 48px with uppercase and 0.96px tracking for the hero creates headlines that feel like mission briefing titles. Even body text at 16px maintains the uppercase/tracked treatment at smaller scales.
+rounded:
+  none: 0px
+  sm: 8px
+  pill: 9999px
+  full: 9999px
 
-What makes SpaceX distinctive is its radical minimalism: no shadows, no borders (except one ghost button border at `rgba(240,240,250,0.35)`), no color (only black and a spectral near-white `#f0f0fa`), no cards, no grids. The only visual element is photography + text. The ghost button with `rgba(240,240,250,0.1)` background and 32px radius is the sole interactive element — barely visible, floating over the imagery like a heads-up display. This isn't a design system in the traditional sense — it's a photographic exhibition with a type system and a single button.
+spacing:
+  xxs: 2px
+  xs: 4px
+  sm: 8px
+  md: 12px
+  lg: 16px
+  xl: 24px
+  2xl: 32px
+  3xl: 48px
+  4xl: 64px
+
+components:
+  nav-bar:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body-sm}"
+    padding: "{spacing.md} {spacing.xl}"
+  nav-link:
+    textColor: "{colors.ink}"
+    typography: "{typography.body-sm}"
+  button-primary:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    borderColor: "{colors.primary}"
+    typography: "{typography.button-md}"
+    rounded: "{rounded.pill}"
+    padding: "{spacing.xs} {spacing.md}"
+  button-outline-on-dark:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    borderColor: "{colors.hairline}"
+    typography: "{typography.button-md}"
+    rounded: "{rounded.pill}"
+    padding: "{spacing.sm} {spacing.lg}"
+  button-outline-sm:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    borderColor: "{colors.hairline}"
+    typography: "{typography.button-md}"
+    rounded: "{rounded.pill}"
+    padding: "{spacing.xs} {spacing.md}"
+  text-input:
+    backgroundColor: "{colors.canvas-soft}"
+    textColor: "{colors.ink}"
+    borderColor: "{colors.hairline}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.md} {spacing.lg}"
+  card-content:
+    backgroundColor: "{colors.canvas-card}"
+    textColor: "{colors.ink}"
+    borderColor: "{colors.hairline}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xl}"
+  card-feature-product:
+    backgroundColor: "{colors.canvas-card}"
+    textColor: "{colors.ink}"
+    borderColor: "{colors.hairline}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xl}"
+  hero-band:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    typography: "{typography.display-xl}"
+    padding: "{spacing.4xl} {spacing.xl}"
+  content-band:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    typography: "{typography.display-md}"
+    padding: "{spacing.4xl} {spacing.xl}"
+  eyebrow-mono:
+    textColor: "{colors.ink}"
+    typography: "{typography.caption-mono}"
+  divider-hairline:
+    borderColor: "{colors.hairline}"
+  footer:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.body}"
+    typography: "{typography.body-sm}"
+    padding: "{spacing.3xl} {spacing.xl}"
+
+  # ─── Examples (illustrative) — auto-derived; resolve any TO_FILL markers below ───
+  ex-pricing-tier:
+    description: "Default Pricing tier card. Re-uses feature-card chrome with brand canvas-soft surface."
+    backgroundColor: "{colors.canvas-soft}"
+    textColor: "{colors.ink}"
+    borderColor: "{colors.hairline}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xl}"
+  ex-pricing-tier-featured:
+    description: "Featured/highlighted tier — polarity-flipped surface (dark fill + light text in light mode, light fill + dark text in dark mode)."
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.on-primary}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xl}"
+  ex-product-selector:
+    description: "What's Included summary card — re-purposed for SaaS / B2B verticals (NOT a literal product gallery)."
+    backgroundColor: "{colors.canvas-soft}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xl}"
+  ex-cart-drawer:
+    description: "Subscription summary — re-purposed for SaaS / B2B (line items per add-on, not literal cart)."
+    backgroundColor: "{colors.canvas}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xl}"
+    item-divider: "{colors.hairline}"
+  ex-app-shell-row:
+    description: "Sidebar nav row inside the App Shell example. Active state uses brand primary as the indicator."
+    backgroundColor: "{colors.canvas}"
+    activeIndicator: "{colors.primary}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.md} {spacing.lg}"
+  ex-data-table-cell:
+    description: "Default data-table th + td chrome. Header uses mono-caps eyebrow typography; body uses body-sm."
+    headerBackground: "{colors.canvas-soft}"
+    headerTypography: "{typography.caption-mono}"
+    bodyTypography: "{typography.body-sm}"
+    cellPadding: "{spacing.md} {spacing.lg}"
+    rowBorder: "{colors.hairline}"
+  ex-auth-form-card:
+    description: "Sign-in / sign-up card. Re-uses feature-card chrome with text-input primitives inside."
+    backgroundColor: "{colors.canvas-soft}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xl}"
+  ex-modal-card:
+    description: "Modal dialog surface — same chrome as feature-card with elevated shadow."
+    backgroundColor: "{colors.canvas}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xl}"
+  ex-empty-state-card:
+    description: "Empty-state illustration frame."
+    backgroundColor: "{colors.canvas-soft}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.3xl}"
+    captionTypography: "{typography.body-md}"
+  ex-toast:
+    description: "Toast notification surface — feature-card shape + medium shadow."
+    backgroundColor: "{colors.canvas}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.md} {spacing.lg}"
+    typography: "{typography.body-sm}"
+---
+
+## Overview
+
+xAI is Elon Musk's frontier-AI lab and the website wears that posture with engineered restraint: a near-black canvas `{colors.canvas}` (`#0a0a0a`) edge-to-edge, white outline pills as every interactive element, and a single proprietary geometric sans `Universal Sans` carrying every display headline at weight 400. There is no gradient hero, no atmospheric backdrop, no product screenshot. The brand reads as confidently sparse — a research lab announcing its work rather than a SaaS marketing site.
+
+Type is the second decisive voice. `Universal Sans` carries every display at weight 400 (regular) with aggressive negative tracking (`-2.4 px` at 96 px, scaling down through the display ladder). For technical labels, eyebrows, and metric counters, the brand pairs `Geist Mono` (uppercase, 1.4 px positive tracking) — every section eyebrow reads as a code comment more than a marketing label.
+
+Every interactive element is a pill (`{rounded.pill}` 9999 px) with 1 px white-translucent border `rgba(255, 255, 255, 0.25)`. The button shape never varies — the same translucent-white pill carries "Try Grok", "Read announcement", "Custom Voices", "Sign up now", and every "Read" anchor. The pill is the entire shape system.
 
 **Key Characteristics:**
-- Pure black canvas with full-viewport cinematic photography — the interface is invisible
-- D-DIN / D-DIN-Bold — industrial DIN-heritage typeface
-- Universal uppercase + positive letter-spacing (0.96px–1.17px) — aerospace stencil aesthetic
-- Near-white spectral text (`#f0f0fa`) — not pure white, a slight blue-violet tint
-- Zero shadows, zero cards, zero containers — text on image only
-- Single ghost button: `rgba(240,240,250,0.1)` background with spectral border
-- Full-viewport sections — each section is a cinematic "scene"
-- No decorative elements — every pixel serves the photography
 
-## 2. Color Palette & Roles
+- A single near-black canvas (`{colors.canvas}` `#0a0a0a`) with white outline pills as the entire interactive vocabulary.
+- Universal Sans weight 400 for display, Geist Mono uppercase tracked for labels — the two-face contrast IS the brand voice.
+- Every button is a `{rounded.pill}` outline with translucent-white border. The brand never uses filled CTAs except for one variant (white-filled pill on Sign Up).
+- Cards are tight `{rounded.sm}` 8 px rectangles in a slightly-lighter `{colors.canvas-card}` (`#191919`) fill with hairline border. No shadows.
+- A muted accent palette of sunset-orange / dusk-purple / twilight-violet / breeze-blue lives in the design tokens but appears rarely on the main marketing surface — reserved for product illustrations / icons.
+- Massive negative letter-spacing on display headlines (`-2.4 px` at 96 px) gives the typography a precise, gathered look.
 
-### Primary
-- **Space Black** (`#000000`): Page background, the void of space — at 50% opacity for overlay gradient
-- **Spectral White** (`#f0f0fa`): Text color — not pure white, a slight blue-violet tint that mimics starlight
+## Colors
 
-### Interactive
-- **Ghost Surface** (`rgba(240, 240, 250, 0.1)`): Button background — nearly invisible, 10% opacity
-- **Ghost Border** (`rgba(240, 240, 250, 0.35)`): Button border — spectral, 35% opacity
-- **Hover White** (`var(--white-100)`): Link hover state — full spectral white
+### Brand & Accent
 
-### Gradient
-- **Dark Overlay** (`rgba(0, 0, 0, 0.5)`): Gradient overlay on photographs to ensure text legibility
+- **White** (`{colors.primary}` — `#ffffff`): The brand's primary "color" — used as button outline, button-primary fill, all display text. The brand's signature is white-on-near-black.
+- **Sunset Orange** (`{colors.accent-sunset}` — `#ff7a17`): A warm orange used inside product illustrations and accent moments.
+- **Sunset Soft** (`{colors.accent-sunset-soft}` — `#ffc285`): The lighter variant of the sunset accent.
+- **Dusk Purple** (`{colors.accent-dusk}` — `#7c3aed`): Deep purple used inside product illustrations.
+- **Twilight** (`{colors.accent-twilight}` — `#c4b5fd`): Soft violet — illustrative accent.
+- **Breeze Blue** (`{colors.accent-breeze}` — `#a0c3ec`): Soft blue — illustrative accent.
+- **Midnight** (`{colors.accent-midnight}` — `#0d1726`): Deep blue-black for illustrative backgrounds.
 
-## 3. Typography Rules
+### Surface
 
-### Font Families
-- **Display**: `D-DIN-Bold` — bold industrial geometric
-- **Body / UI**: `D-DIN`, fallbacks: `Arial, Verdana`
+- **Canvas** (`{colors.canvas}` — `#0a0a0a`): The default near-black page background. The brand's only true surface.
+- **Canvas Soft** (`{colors.canvas-soft}` — `#1a1c20`): A slightly lighter dark fill used for hovered nav items and tooltips.
+- **Canvas Card** (`{colors.canvas-card}` — `#191919`): The charcoal card fill used inside product-feature cards.
+- **Canvas Mid** (`{colors.canvas-mid}` — `#363a3f`): A mid-dark used for nested surfaces and code mockup backgrounds.
+- **Hairline** (`{colors.hairline}` — `#212327`): 1 px solid dividers on dark surfaces.
+
+### Text
+
+- **Ink** (`{colors.ink}` — `#ffffff`): Default text on canvas — pure white.
+- **Ink Hover** (`{colors.ink-hover}` — `#fafaf7`): Slightly off-white used for hover states (filtered out per no-hover policy in component specs).
+- **Body** (`{colors.body}` — `#dadbdf`): Secondary body text — supporting copy in lighter weight.
+- **Body Mid / Mute** (`{colors.body-mid}` — `#7d8187`): Mid-emphasis body and mute text — captions, fine print.
+
+### Semantic
+
+The brand doesn't surface a separate semantic palette on the marketing site. Validation cues use the white-on-canvas hierarchy.
+
+## Typography
+
+### Font Family
+
+Two faces ladder the system:
+
+1. **universalSans** — proprietary geometric sans used for every display, body, button, and link role. Weight 400 only on the marketing surface (the brand's restraint is part of the voice). Negative letter-spacing at display sizes is the visual signature.
+2. **GeistMono** — used for uppercase section eyebrows, label captions, and metric counters. Positive tracking (1.2 – 1.4 px) at 12 – 14 px.
 
 ### Hierarchy
 
-| Role | Font | Size | Weight | Line Height | Letter Spacing | Notes |
-|------|------|------|--------|-------------|----------------|-------|
-| Display Hero | D-DIN-Bold | 48px (3.00rem) | 700 | 1.00 (tight) | 0.96px | `text-transform: uppercase` |
-| Body | D-DIN | 16px (1.00rem) | 400 | 1.50–1.70 | normal | Standard reading text |
-| Nav Link Bold | D-DIN | 13px (0.81rem) | 700 | 0.94 (tight) | 1.17px | `text-transform: uppercase` |
-| Nav Link | D-DIN | 12px (0.75rem) | 400 | 2.00 (relaxed) | normal | `text-transform: uppercase` |
-| Caption Bold | D-DIN | 13px (0.81rem) | 700 | 0.94 (tight) | 1.17px | `text-transform: uppercase` |
-| Caption | D-DIN | 12px (0.75rem) | 400 | 1.00 (tight) | normal | `text-transform: uppercase` |
-| Micro | D-DIN | 10px (0.63rem) | 400 | 0.94 (tight) | 1px | `text-transform: uppercase` |
+| Token                          | Size | Weight | Line Height | Letter Spacing | Use                                    |
+| ------------------------------ | ---- | ------ | ----------- | -------------- | -------------------------------------- |
+| `{typography.display-xl}`      | 96px | 400    | 96px        | -2.4px         | Maximum hero scale.                    |
+| `{typography.display-lg}`      | 72px | 400    | 72px        | -1.8px         | Sub-hero displays.                     |
+| `{typography.display-md}`      | 48px | 400    | 48px        | -1.2px         | Section headlines.                     |
+| `{typography.display-sm}`      | 32px | 400    | 36px        | -0.6px         | Card-cluster headings.                 |
+| `{typography.display-xs}`      | 20px | 400    | 28px        | 0              | Inline displays.                       |
+| `{typography.body-lg}`         | 18px | 400    | 28px        | 0              | Lead paragraphs.                       |
+| `{typography.body-md}`         | 16px | 400    | 24px        | 0              | Default body.                          |
+| `{typography.body-sm}`         | 14px | 400    | 20px        | 0              | Secondary body.                        |
+| `{typography.caption-mono}`    | 14px | 400    | 20px        | 1.4px          | Section eyebrow (GeistMono uppercase). |
+| `{typography.caption-mono-sm}` | 12px | 400    | 16px        | 1.2px          | Small mono labels.                     |
+| `{typography.button-md}`       | 14px | 400    | 20px        | 0              | Button label.                          |
 
 ### Principles
-- **Universal uppercase**: Nearly every text element uses `text-transform: uppercase`. This creates a systematic military/aerospace voice where all communication feels like official documentation.
-- **Positive letter-spacing as identity**: 0.96px on display, 1.17px on nav — the wide tracking creates the stenciled, industrial feel that connects to DIN's heritage as a German engineering standard.
-- **Two weights, strict hierarchy**: D-DIN-Bold (700) for headlines and nav emphasis, D-DIN (400) for body. No medium or semibold weights exist in the system.
-- **Tight line-heights**: 0.94–1.00 across most text — compressed, efficient, mission-critical communication.
 
-## 4. Component Stylings
+- **Weight 400 for everything.** The brand never bolds. Negative tracking + size hierarchy do the emphasis work.
+- **Tight negative tracking on display sizes.** Reverting to neutral tracking loses the precision feel.
+- **GeistMono uppercase for eyebrows.** Tracked positively (1.4 px) to make the mono read as a code comment.
+
+### Note on Font Substitutes
+
+universalSans is proprietary. Open-source substitutes:
+
+- **Display + body** — _Inter_ weight 400 with `-0.04em` to `-0.02em` letter-spacing at display sizes comes closest. _Geist_ is the second-best option.
+- **Mono** — _Geist Mono_ is the documented brand companion; _JetBrains Mono_ or _IBM Plex Mono_ are alternates.
+
+## Layout
+
+### Spacing System
+
+- **Base unit**: 4 px.
+- **Tokens**: `{spacing.xxs}` 2 px · `{spacing.xs}` 4 px · `{spacing.sm}` 8 px · `{spacing.md}` 12 px · `{spacing.lg}` 16 px · `{spacing.xl}` 24 px · `{spacing.2xl}` 32 px · `{spacing.3xl}` 48 px · `{spacing.4xl}` 64 px.
+- **Section padding**: hero / content bands at `{spacing.4xl}` 64 px on desktop.
+- **Card interior padding**: `{spacing.xl}` 24 px.
+
+### Grid & Container
+
+- Marketing content centres at ~1200 px.
+- Product / announcement card grid: 2-up at desktop, 1-up at mobile.
+
+### Responsive Strategy
+
+#### Breakpoints
+
+| Name    | Width   | Key Changes                                        |
+| ------- | ------- | -------------------------------------------------- |
+| Mobile  | < 768px | Hero scales 96 → 48 px; grids 1-up; hamburger nav. |
+| Desktop | ≥ 768px | Full hero + 2-up grids.                            |
+
+#### Touch Targets
+
+Buttons render ~32 – 40 px tall (8 vertical padding + 20 line). Mobile inflates touch area to meet WCAG 44 × 44 px.
+
+#### Image Behavior
+
+The brand uses sparse SVG illustrations for product moments (Grok, Voice, API). No photography on the marketing surface.
+
+## Elevation & Depth
+
+| Level              | Treatment                              | Use                                                    |
+| ------------------ | -------------------------------------- | ------------------------------------------------------ |
+| Level 0 — Flat     | No shadow, no border.                  | Default.                                               |
+| Level 1 — Hairline | 1 px solid `{colors.hairline}` border. | Card chrome, button outlines (with translucent white). |
+
+The brand uses no shadows. Hairline borders carry all elevation cues.
+
+## Shapes
+
+### Border Radius Scale
+
+| Token            | Value  | Use                                                     |
+| ---------------- | ------ | ------------------------------------------------------- |
+| `{rounded.none}` | 0px    | Full-bleed bands.                                       |
+| `{rounded.sm}`   | 8px    | Card chrome (the brand's `--radius` value).             |
+| `{rounded.pill}` | 9999px | Every button — the brand's universal interactive shape. |
+| `{rounded.full}` | 9999px | Circular icon containers.                               |
+
+## Components
 
 ### Buttons
 
-**Ghost Button**
-- Background: `rgba(240, 240, 250, 0.1)` (barely visible)
-- Text: Spectral White (`#f0f0fa`)
-- Padding: 18px
-- Radius: 32px
-- Border: `1px solid rgba(240, 240, 250, 0.35)`
-- Hover: background brightens, text to `var(--white-100)`
-- Use: The only button variant — "LEARN MORE" CTAs on photography
+**`button-primary`** — the rare white-filled pill (used on a single Sign Up CTA).
+
+- Background `{colors.primary}` white, text `{colors.on-primary}` near-black, 1 px solid white border, label `{typography.button-md}`, padding `{spacing.xs} {spacing.md}`, shape `{rounded.pill}` 9999 px.
+
+**`button-outline-on-dark`** — the canonical white-outline pill, used for every non-primary CTA.
+
+- Background `{colors.canvas}` (transparent in practice — `rgba(0,0,0,0)`), text `{colors.ink}` white, 1 px solid `{colors.hairline}` border (translucent white at runtime), same typography / padding scale / shape.
+
+**`button-outline-sm`** — the smaller outline pill used in card-cluster CTAs.
+
+- Same as `button-outline-on-dark` with tighter padding `{spacing.xs} {spacing.md}`.
 
 ### Cards & Containers
-- **None.** SpaceX does not use cards, panels, or containers. All content is text directly on full-viewport photographs. The absence of containers IS the design.
+
+**`card-content`** — the default content card.
+
+- Background `{colors.canvas-card}` (`#191919`), text `{colors.ink}`, 1 px solid `{colors.hairline}` border, padding `{spacing.xl}`, shape `{rounded.sm}` 8 px.
+
+**`card-feature-product`** — the product-feature card (Grok / Voice / API).
+
+- Same chrome as `card-content`. Hosts an SVG illustration + headline + body + outline pill CTA.
 
 ### Inputs & Forms
-- Not present on the homepage. The site is purely presentational.
+
+**`text-input`** — the standard text input on dark.
+
+- Background `{colors.canvas-soft}`, text `{colors.ink}`, 1 px solid `{colors.hairline}`, body in `{typography.body-md}`, padding `{spacing.md} {spacing.lg}`, shape `{rounded.sm}` 8 px.
 
 ### Navigation
-- Transparent overlay nav on photography
-- D-DIN 13px weight 700, uppercase, 1.17px tracking
-- Spectral white text on dark imagery
-- Logo: SpaceX wordmark at 147x19px
-- Mobile: hamburger collapse
 
-### Image Treatment
-- Full-viewport (100vh) photography sections
-- Professional aerospace photography: rockets, Mars, space
-- Dark gradient overlays (`rgba(0,0,0,0.5)`) for text legibility
-- Each section = one full-screen photograph with text overlay
-- No border radius, no frames — edge-to-edge imagery
+**`nav-bar`** — the sticky top nav.
 
-## 5. Layout Principles
+- Background `{colors.canvas}`, text `{colors.ink}`, padding `{spacing.md} {spacing.xl}`.
 
-### Spacing System
-- Base unit: 8px
-- Scale: 3px, 5px, 12px, 15px, 18px, 20px, 24px, 30px
-- Minimal scale — spacing is not the organizing principle; photography is
+**`nav-link`** — link items inside nav.
 
-### Grid & Container
-- No traditional grid — each section is a full-viewport cinematic frame
-- Text is positioned absolutely or with generous padding over imagery
-- Left-aligned text blocks on photography backgrounds
-- No max-width container — content bleeds to viewport edges
+- Text `{colors.ink}`, set in `{typography.body-sm}`.
 
-### Whitespace Philosophy
-- **Photography IS the whitespace**: Empty space in the design is never empty — it's filled with the dark expanse of space, the curve of a planet, or the flame of a rocket engine. Traditional whitespace concepts don't apply.
-- **Vertical pacing through viewport**: Each section is exactly one viewport tall, creating a rhythmic scroll where each "page" reveals a new scene.
+**`footer`** — the footer band.
 
-### Border Radius Scale
-- Sharp (4px): Small dividers, utility elements
-- Button (32px): Ghost buttons — the only rounded element
+- Background `{colors.canvas}`, text `{colors.body}`, padding `{spacing.3xl} {spacing.xl}`. Body in `{typography.body-sm}`.
 
-## 6. Depth & Elevation
+### Signature Components
 
-| Level | Treatment | Use |
-|-------|-----------|-----|
-| Photography (Level 0) | Full-viewport imagery | Background layer — always present |
-| Overlay (Level 1) | `rgba(0, 0, 0, 0.5)` gradient | Text legibility layer over photography |
-| Text (Level 2) | Spectral white text, no shadow | Content layer — text floats directly on image |
-| Ghost (Level 3) | `rgba(240, 240, 250, 0.1)` surface | Barely-visible interactive layer |
+**`hero-band`** — the dark hero with massive display headline.
 
-**Shadow Philosophy**: SpaceX uses ZERO shadows. In a design built entirely on photography, shadows are meaningless — every surface is already a photograph with natural lighting. Depth comes from the photographic content itself: the receding curvature of Earth, the diminishing trail of a rocket, the atmospheric haze around Mars.
+- Background `{colors.canvas}`, text `{colors.ink}`, padding `{spacing.4xl} {spacing.xl}`. Headline in `{typography.display-xl}` (96 px weight 400 with `-2.4 px` tracking).
 
-## 7. Do's and Don'ts
+**`content-band`** — the standard content section.
+
+- Background `{colors.canvas}`, text `{colors.ink}`, padding `{spacing.4xl} {spacing.xl}`. Section headline in `{typography.display-md}` preceded by a `{typography.caption-mono}` UPPERCASE GeistMono eyebrow.
+
+**`eyebrow-mono`** — the uppercase tracked GeistMono label above every section headline.
+
+- Text `{colors.ink}`, set in `{typography.caption-mono}`. The brand's signature label style.
+
+**`divider-hairline`** — the 1 px line between section bands.
+
+- 1 px solid `{colors.hairline}`.
+
+### Examples (illustrative)
+
+> Auto-derived kit-mirror demonstration surfaces (`scripts/derive-examples-block.mjs`). Each `ex-*` entry references brand-native primitives so downstream consumers (`/preview-design`, `/generate-kit`) re-skin the same 10 surfaces consistently. `TO_FILL` markers indicate missing primitives — resolve in the LLM judgment pass.
+
+**`ex-pricing-tier`** — Default Pricing tier card. Re-uses feature-card chrome with brand canvas-soft surface.
+
+- Properties: `backgroundColor`, `textColor`, `borderColor`, `rounded`, `padding`
+
+**`ex-pricing-tier-featured`** — Featured/highlighted tier — polarity-flipped surface (dark fill + light text in light mode, light fill + dark text in dark mode).
+
+- Properties: `backgroundColor`, `textColor`, `rounded`, `padding`
+
+**`ex-product-selector`** — What's Included summary card — re-purposed for SaaS / B2B verticals (NOT a literal product gallery).
+
+- Properties: `backgroundColor`, `rounded`, `padding`
+
+**`ex-cart-drawer`** — Subscription summary — re-purposed for SaaS / B2B (line items per add-on, not literal cart).
+
+- Properties: `backgroundColor`, `rounded`, `padding`, `item-divider`
+
+**`ex-app-shell-row`** — Sidebar nav row inside the App Shell example. Active state uses brand primary as the indicator.
+
+- Properties: `backgroundColor`, `activeIndicator`, `rounded`, `padding`
+
+**`ex-data-table-cell`** — Default data-table th + td chrome. Header uses mono-caps eyebrow typography; body uses body-sm.
+
+- Properties: `headerBackground`, `headerTypography`, `bodyTypography`, `cellPadding`, `rowBorder`
+
+**`ex-auth-form-card`** — Sign-in / sign-up card. Re-uses feature-card chrome with text-input primitives inside.
+
+- Properties: `backgroundColor`, `rounded`, `padding`
+
+**`ex-modal-card`** — Modal dialog surface — same chrome as feature-card with elevated shadow.
+
+- Properties: `backgroundColor`, `rounded`, `padding`
+
+**`ex-empty-state-card`** — Empty-state illustration frame.
+
+- Properties: `backgroundColor`, `rounded`, `padding`, `captionTypography`
+
+**`ex-toast`** — Toast notification surface — feature-card shape + medium shadow.
+
+- Properties: `backgroundColor`, `rounded`, `padding`, `typography`
+
+## Do's and Don'ts
 
 ### Do
-- Use full-viewport photography as the primary design element — every section is a scene
-- Apply uppercase + positive letter-spacing to ALL text — the aerospace stencil voice
-- Use D-DIN exclusively — no other fonts exist in the system
-- Keep the color palette to black + spectral white (`#f0f0fa`) only
-- Use ghost buttons (`rgba(240,240,250,0.1)`) as the sole interactive element
-- Apply dark gradient overlays for text legibility on photographs
-- Let photography carry the emotional weight — the type system is functional, not expressive
+
+- Reserve `{colors.canvas}` (`#0a0a0a`) as the only page surface. The brand is dark-canvas only.
+- Set hero headlines in `{typography.display-xl}` Universal Sans weight 400 with `-2.4 px` tracking. The precision IS the voice.
+- Use `{rounded.pill}` 9999 px on every interactive element. The pill is the brand.
+- Pair Universal Sans (sentence-case) with GeistMono UPPERCASE (eyebrows, labels, metric counters).
+- Use white-translucent borders for outline buttons — the brand never uses solid white borders on its outline pill.
 
 ### Don't
-- Don't add cards, panels, or containers — text sits directly on photography
-- Don't use shadows — they have no meaning in a photographic context
-- Don't introduce colors — the palette is strictly achromatic with spectral tint
-- Don't use sentence case — everything is uppercase
-- Don't use negative letter-spacing — all tracking is positive (0.96px–1.17px)
-- Don't reduce photography to thumbnails — every image is full-viewport
-- Don't add decorative elements (icons, badges, dividers) — the design is photography + type + one button
 
-## 8. Responsive Behavior
-
-### Breakpoints
-| Name | Width | Key Changes |
-|------|-------|-------------|
-| Mobile | <600px | Stacked, reduced padding, smaller type |
-| Tablet Small | 600–960px | Adjusted layout |
-| Tablet | 960–1280px | Standard scaling |
-| Desktop | 1280–1350px | Full layout |
-| Large Desktop | 1350–1500px | Expanded |
-| Ultra-wide | >1500px | Maximum viewport |
-
-### Touch Targets
-- Ghost buttons: 18px padding provides adequate touch area
-- Navigation links: uppercase with generous letter-spacing aids readability
-
-### Collapsing Strategy
-- Photography: maintains full-viewport at all sizes, content reposition
-- Hero text: 48px → scales down proportionally
-- Navigation: horizontal → hamburger
-- Text blocks: reposition but maintain overlay-on-photography pattern
-- Full-viewport sections maintained on mobile
-
-### Image Behavior
-- Edge-to-edge photography at all viewport sizes
-- Background-size: cover with center focus
-- Dark overlay gradients adapt to content position
-- No art direction changes — same photographs, responsive positioning
-
-## 9. Agent Prompt Guide
-
-### Quick Color Reference
-- Background: Space Black (`#000000`)
-- Text: Spectral White (`#f0f0fa`)
-- Button background: Ghost (`rgba(240, 240, 250, 0.1)`)
-- Button border: Ghost Border (`rgba(240, 240, 250, 0.35)`)
-- Overlay: `rgba(0, 0, 0, 0.5)`
-
-### Example Component Prompts
-- "Create a full-viewport hero: background-image covering 100vh, dark gradient overlay rgba(0,0,0,0.5). Headline at 48px D-DIN-Bold, uppercase, letter-spacing 0.96px, spectral white (#f0f0fa) text. Ghost CTA button: rgba(240,240,250,0.1) bg, 1px solid rgba(240,240,250,0.35) border, 32px radius, 18px padding."
-- "Design a navigation: transparent over photography. D-DIN 13px weight 700, uppercase, letter-spacing 1.17px, spectral white text. SpaceX wordmark left-aligned."
-- "Build a content section: full-viewport height, background photography with dark overlay. Left-aligned text block with 48px D-DIN-Bold uppercase heading, 16px D-DIN body text, and ghost button below."
-- "Create a micro label: D-DIN 10px, uppercase, letter-spacing 1px, spectral white, line-height 0.94."
-
-### Iteration Guide
-1. Start with photography — the image IS the design
-2. All text is uppercase with positive letter-spacing — no exceptions
-3. Only two colors: black and spectral white (#f0f0fa)
-4. Ghost buttons are the only interactive element — transparent, spectral-bordered
-5. Zero shadows, zero cards, zero decorative elements
-6. Every section is full-viewport (100vh) — cinematic pacing
+- Don't introduce a light-mode counterpart. xAI is dark-canvas only.
+- Don't bold display headlines. Weight 400 is the entire scale.
+- Don't use filled buttons broadly. The brand uses outline pills almost exclusively; one Sign Up white-filled pill is the rare exception.
+- Don't drop a drop-shadow on cards. Hairline borders carry elevation.
+- Don't substitute Universal Sans with a generic geometric sans without adjusting letter-spacing. The negative tracking is part of the brand.

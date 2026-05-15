@@ -1,26 +1,31 @@
 :root {
-  --spacex-black: #ffffff; /* 그리드 배경 (White) */
-  --spacex-white: #181d1f; /* 텍스트 색상 (Dark Gray) */
-  --spacex-ghost-bg: #f8f8f8; /* 헤더 및 버튼 배경 (Light Gray) */
-  --spacex-ghost-border: 1px solid #babfc7; /* AG-Grid 기본 테두리 색상 */
-  --spacex-overlay: rgba(255, 255, 255, 0.6); /* 로딩 오버레이 느낌 */
+  --spacex-black: #0a0a0a;
+  --spacex-white: #ffffff;
+  --spacex-ghost-bg: #1a1c20;
+  --spacex-ghost-border: 1px solid #212327;
+  --spacex-overlay: rgba(10, 10, 10, 0.72);
+  --spacex-border-strong: 1px solid rgba(255, 255, 255, 0.24);
+  --spacex-text-body: #dadbdf;
+  --spacex-text-mute: #7d8187;
   --spacex-font-display:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    universalSans, Inter, system-ui, -apple-system, sans-serif;
   --spacex-font-body:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    universalSans, Inter, system-ui, -apple-system, sans-serif;
+  --spacex-font-mono:
+    GeistMono, ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
   --spacex-hero-size: 2rem;
-  --spacex-body-size: 13px; /* 데이터 그리드에 적합한 폰트 크기 */
-  --spacex-nav-size: 13px;
+  --spacex-body-size: 14px;
+  --spacex-nav-size: 12px;
   --spacex-caption-size: 12px;
   --spacex-micro-size: 11px;
-  --spacex-hero-spacing: normal;
-  --spacex-nav-spacing: normal;
-  --spacex-micro-spacing: normal;
-  --spacex-radius-btn: 3px; /* 버튼의 둥글기를 조금 더 각지게 조절 */
+  --spacex-hero-spacing: -0.02em;
+  --spacex-nav-spacing: 0.1em;
+  --spacex-micro-spacing: 0.08em;
+  --spacex-radius-btn: 9999px;
   --spacex-radius-sharp: 0px;
   --spacex-spacing-base: 8px;
-  --spacex-spacing-lg: 12px;
-  --spacex-spacing-xl: 16px;
+  --spacex-spacing-lg: 16px;
+  --spacex-spacing-xl: 24px;
 }
 
 .grid-container {
@@ -34,58 +39,54 @@
   font-family: var(--spacex-font-body);
   color: var(--spacex-white);
   border: var(--spacex-ghost-border);
+  border-radius: 8px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
 }
 
 .grid-header {
-  /* display: flex; <-- 삭제 */
-  display: block; /* Flex 해제 */
-  position: sticky; /* 자식 요소들의 absolute 기준점 */
-  top: 0; /* sticky를 적용하기 위해 top 값 지정 */
-  height: 40px; /* 💡 필수: absolute 자식들을 품기 위한 높이 지정 */
+  display: block;
+  position: sticky;
+  top: 0;
+  height: 40px;
   width: 100%;
   z-index: 3;
   flex-shrink: 0;
   background: var(--spacex-ghost-bg);
-  font-family: var(--spacex-font-display);
-  font-weight: 600;
+  font-family: var(--spacex-font-mono);
+  font-weight: 400;
   font-size: var(--spacex-nav-size);
   letter-spacing: var(--spacex-nav-spacing);
-  text-transform: none;
+  text-transform: uppercase;
   color: var(--spacex-white);
   padding: 0;
   user-select: none;
   border-bottom: var(--spacex-ghost-border);
+  backdrop-filter: blur(4px);
 }
 
 .grid-header-cell {
-  /* flex: 1 1 0; <-- 삭제 */
-  position: absolute; /* 💡 필수: React 인라인 스타일과 호흡을 맞춤 */
+  position: absolute;
   top: 0;
-  height: 100%; /* 부모(grid-header)의 높이를 꽉 채움 */
-  display: flex; /* 글자를 가운데 정렬하기 위해 내부적으로만 flex 사용 */
+  height: 100%;
+  display: flex;
   align-items: center;
   background: transparent;
   border: none;
   border-right: var(--spacex-ghost-border);
   color: var(--spacex-white);
-  font-family: var(--spacex-font-display);
-  font-weight: 600;
+  font-family: var(--spacex-font-mono);
+  font-weight: 400;
   font-size: var(--spacex-nav-size);
   letter-spacing: var(--spacex-nav-spacing);
-  text-transform: none;
+  text-transform: uppercase;
   text-align: left;
-  padding: 0 var(--spacex-spacing-lg); /* 위아래 패딩 대신 flex 정렬 사용 추천 */
+  padding: 0 var(--spacex-spacing-lg);
   white-space: nowrap;
   box-sizing: border-box;
-  /*transition:;*/
-  /* left 0.15s cubic-bezier(0.4, 0, 0.2, 1), */
-  /* opacity 0.15s linear; 속도를 약간 빠르게 수정 */
 }
 
-/* :last-child 대신 .last-column 클래스를 사용해 논리적으로 마지막 열의 보더를 지웁니다 */
 .grid-header-cell.last-column {
   border-right: none;
 }
@@ -95,37 +96,75 @@
   width: 100%;
   flex: 1;
   overflow: auto;
-  scrollbar-gutter: stable; /* 스크롤바가 항상 공간을 차지하도록 설정 */
+  scrollbar-gutter: stable;
   position: relative;
   z-index: 1;
 }
 
+.grid-body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.grid-body::-webkit-scrollbar-track {
+  background: #0d0f13;
+}
+
+.grid-body::-webkit-scrollbar-thumb {
+  background: #212327;
+  border: 2px solid #0d0f13;
+  border-radius: 9999px;
+}
+
+.grid-exit-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.grid-exit-row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  will-change: transform, opacity;
+  transition:
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.grid-exit-row-up,
+.grid-exit-row-down {
+  pointer-events: none;
+}
+
 .grid-row {
-  display: block; /* Flex 해제 */
-  position: relative; /* 자식 요소들의 absolute 기준점 */
-  height: 40px; /* 💡 필수: absolute 자식들을 품기 위한 높이 지정 */
+  display: block;
+  position: relative;
+  height: 40px;
   box-sizing: border-box;
-  border-bottom: 1px solid #dde2eb;
+  border-bottom: var(--spacex-ghost-border);
   background: var(--spacex-black);
-  transition: background-color 0.1s ease;
+  transition: background-color 0.18s ease;
 }
 
 .grid-row:hover {
-  background-color: #f3f6f8; /* AG-Grid 특유의 행 마우스 오버 효과 */
+  background-color: #14161a;
 }
 
 .grid-cell {
-  /* flex: 1 1 0; <-- 삭제 */
-  position: absolute; /* 💡 필수 */
+  position: absolute;
   top: 0;
-  height: 100%; /* 부모(grid-row)의 높이를 꽉 채움 */
+  height: 100%;
   display: flex;
   align-items: center;
   padding: 0 var(--spacex-spacing-lg);
-  color: var(--spacex-white);
+  color: var(--spacex-text-body);
   font-family: var(--spacex-font-body);
   font-size: var(--spacex-body-size);
-  letter-spacing: normal;
+  letter-spacing: 0;
   background: transparent;
   min-width: 0;
   overflow: hidden;
@@ -139,36 +178,35 @@
     opacity 0.15s linear;
 }
 
-/* :last-child 대신 .last-column 클래스를 사용해 논리적으로 마지막 열의 보더를 지웁니다 */
 .grid-cell.last-column {
   border-right: none;
 }
 
-/* Ghost Button (AG-Grid 내부의 액션 버튼 느낌으로 수정) */
 .ghost-btn {
-  background: var(--spacex-black);
+  background: transparent;
   color: var(--spacex-white);
-  border: var(--spacex-ghost-border);
+  border: var(--spacex-border-strong);
   border-radius: var(--spacex-radius-btn);
-  padding: 6px 12px;
+  padding: 4px 12px;
   font-family: var(--spacex-font-display);
   font-size: var(--spacex-caption-size);
-  letter-spacing: normal;
+  letter-spacing: 0.02em;
   text-transform: none;
   cursor: pointer;
   outline: none;
   transition:
     background 0.2s,
-    color 0.2s;
-  margin: 0; /* 불필요한 마진 제거 */
+    color 0.2s,
+    border-color 0.2s;
+  margin: 0;
 }
 
 .ghost-btn:hover {
-  background: var(--spacex-ghost-bg);
-  color: var(--spacex-white);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.34);
+  color: #fafaf7;
 }
 
-/* Overlay for text legibility (AG-Grid 로딩 상태 오버레이처럼 수정) */
 .spacex-overlay {
   position: absolute;
   top: 0;
@@ -182,44 +220,45 @@
   align-items: center;
   justify-content: center;
 }
-/* Header Modal (컬럼 드래그 시 나타나는 모달 스타일) */
+
 .header-modal {
   position: fixed;
   top: 0;
   left: 0;
-  background: #fff;
-  border: 1px solid #babfc7;
-  border-radius: 4px;
-  padding: 8px 10px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  background: #191919;
+  border: var(--spacex-ghost-border);
+  border-radius: 8px;
+  padding: 8px 12px;
   z-index: 1000;
   min-width: 120px;
   font-size: 12px;
-  color: #181d1f;
-  pointer-events: none; /* 드래그 중 모달이 마우스 이벤트를 가로채지 않도록 */
+  color: var(--spacex-white);
+  pointer-events: none;
   white-space: nowrap;
 }
 
 .header-modal-title {
-  font-weight: 700;
-  margin-bottom: 2px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
 }
 
 .header-modal-meta {
-  color: #5d6670;
+  color: var(--spacex-text-mute);
 }
 
 .loading-bar {
-  padding: 12px 24px;
-  background-color: var(--spacex-black);
+  padding: 8px 16px;
+  background-color: #191919;
   color: var(--spacex-white);
-  font-family: var(--spacex-font-display);
+  font-family: var(--spacex-font-mono);
   font-size: var(--spacex-body-size);
-  border: var(--spacex-ghost-border);
+  letter-spacing: var(--spacex-micro-spacing);
+  text-transform: uppercase;
+  border: var(--spacex-border-strong);
   border-radius: var(--spacex-radius-btn);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
-  /* 부드럽게 깜빡이는 애니메이션 효과 */
   animation: pulse 1.5s infinite ease-in-out;
 }
 
@@ -242,23 +281,13 @@
   .grid-header-cell,
   .grid-cell {
     font-size: var(--spacex-caption-size);
-    padding: var(--spacex-spacing-base);
+    padding: 0 var(--spacex-spacing-base);
   }
 }
 
 @media (max-width: 400px) {
-  .grid-header {
-    flex-direction: column;
-  }
-  .grid-row {
-    flex-direction: column;
-  }
   .grid-header-cell,
   .grid-cell {
-    width: 100%;
-    box-sizing: border-box;
-    padding: var(--spacex-spacing-base);
-    border-right: none;
-    border-bottom: 1px solid #dde2eb;
+    padding: 0 var(--spacex-spacing-base);
   }
 }

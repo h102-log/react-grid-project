@@ -111,13 +111,14 @@ function App() {
         {/* 그리드 렌더링 영역 */}
         <div style={{ flex: 1, overflow: "hidden" }}>
           <HGrid
-            /*columns={largeColumns}*/
-            columns={columns}
+            columns={largeColumns}
+            /*columns={columns}*/
             data={largeData}
-            onFetchData={fetchFromServer}
+            /*onFetchData={fetchFromServer}*/
             /*onFetchData={fetchFromServer}*/
             startIndex={0}
             endIndex={1000}
+            enableRowSelection={true} // 행 선택 기능 활성화
           />
         </div>
       </div>

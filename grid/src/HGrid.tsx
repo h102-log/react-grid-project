@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import type { GridProps } from "./types/types";
+import type { Column, GridProps } from "./types/types";
 import GridContainer from "./components/GridContainer";
 import GridHeader from "./components/GridHeader";
 import GridBody from "./components/GridBody";
@@ -15,6 +15,7 @@ const HGrid: React.FC<GridProps> = ({
   onFetchData,
   startIndex = 0,
   endIndex = 50,
+  enableRowSelection = false,
 }: GridProps) => {
   const [queryClient] = useState(() => new QueryClient());
   const setColumns = useGridStore((state) => state.setColumns);
@@ -43,6 +44,7 @@ const HGrid: React.FC<GridProps> = ({
     };
   }, []);
 
+  // 4. 스토어의 컬럼 상태를 참조하는 ref를 만들어, 컬럼이 변경될 때마다 최신 값을 유지하도록 합니다.
   const currentStoreColumns = useGridStore((state) => state.columns);
   const currentStoreColumnsRef = useRef(currentStoreColumns);
 
@@ -81,12 +83,32 @@ const HGrid: React.FC<GridProps> = ({
     // 너비 측정이 아직 안 끝났다면 계산을 잠시 보류합니다.
     if (containerWidth === 0) return;
 
+    // 체크박스 컬럼을 추가할지 판단
+    let processedColumns = [...columns];
+
+    if (
+      enableRowSelection &&
+      !processedColumns.find((col) => col.key === "_checkbox")
+    ) {
+      // 체크박스 컬럼을 맨 앞에 삽입
+      const checkboxColumn: Column = {
+        key: "_checkbox",
+        name: "선택",
+        width: 50,
+        resizable: false,
+        sortable: false,
+        filterable: false,
+        cellRenderer: () => <input type="checkbox" />, // 나중에 로직 추가
+      };
+      processedColumns = [checkboxColumn, ...processedColumns];
+    }
+
     // 💡 순서 재정렬 상태를 유지하기 위해, 스토어에 이미 데이터가 있다면 그 순서를 사용합니다.
     // (단, 외부에서 주입되는 columns prop의 개수가 달라졌다면 초기화가 필요하므로 예외 처리)
     const baseColumns =
-      currentStoreColumnsRef.current.length === columns.length
+      currentStoreColumnsRef.current.length === processedColumns.length
         ? currentStoreColumnsRef.current
-        : columns;
+        : processedColumns;
 
     let definedWidthSum = 0; // width가 지정된 컬럼들의 너비 합
     let undefinedWidthCount = 0; // width가 지정되지 않은 컬럼들의 개수
@@ -125,7 +147,7 @@ const HGrid: React.FC<GridProps> = ({
     });
 
     setColumns(columnsWithLeft);
-  }, [columns, containerWidth, setColumns]);
+  }, [columns, containerWidth, enableRowSelection, setColumns]);
 
   // 초기 데이터 로드 (한 번만)
   useEffect(() => {
@@ -138,6 +160,13 @@ const HGrid: React.FC<GridProps> = ({
   // 배열 데이터 처리
   useEffect(() => {
     if (!dataSource && Array.isArray(data) && data.length > 0) {
+      if (data.length > 10000) {
+        console.warn(
+          `[HGrid] data prop에 ${data.length.toLocaleString()}건이 감지되었습니다. ` +
+            "10,000건 이상의 대용량 데이터는 클라이언트 정렬 시 성능 문제가 발생할 수 있습니다. " +
+            "onFetchData 콜백을 사용하여 서버사이드 처리를 권장합니다.",
+        );
+      }
       const timer = window.setTimeout(() => {
         setIsFetching(true);
         setData(data);

@@ -10,6 +10,7 @@ export interface Column {
   // 선택사항
   width?: number; //컬럼의 너비 (선택 사항)
   left?: number; //컬럼의 왼쪽 위치 (선택 사항)
+  transformY?: number; //컬럼의 Y축 변환 값 (선택 사항)
   readOnly?: boolean; //컬럼이 읽기 전용인지 여부 (선택 사항)
   cellRenderer?: (value: GridData, rowIndex: number) => React.ReactNode; //셀 렌더러 함수 (선택 사항)
   sortable?: boolean; //컬럼이 정렬 가능한지 여부 (선택 사항)
@@ -35,12 +36,14 @@ export type GridData =
 
 // 기존 고급 그리드용 props
 export interface GridProps<T = Record<string, JsonValue>> {
-  columns: Column[];
-  data: GridData;
+  columns: Column[]; // 컬럼 정의 배열
+  data: GridData; // 그리드에 표시할 데이터 (배열 또는 데이터 패칭 함수)
   onFetchData?: (startIndex: number, endIndex: number) => Promise<T[]>; // 검색 콜백 함수
   startIndex?: number; // 데이터 패칭 시작 인덱스 (선택 사항)
   endIndex?: number; // 데이터 패칭 종료 인덱스 (선택 사항)
-  totalCount?: number;
+  totalCount?: number; // 전체 데이터 개수 (선택 사항, 페이지네이션에 필요)
+  enableRowSelection?: boolean; // 행 선택 기능 활성화 여부 (선택 사항)
+
   // --- AI 연동 옵션  ---
   apiKey?: string | ((query: string, contextData: T[]) => Promise<string>); // 상용 배포용 커스텀 콜백 함수
 }

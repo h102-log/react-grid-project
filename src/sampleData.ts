@@ -21,7 +21,7 @@ export const largeColumns: Column[] = [
   { key: "age", name: "age", width: 100 },
 ];
 // 대용량 데이터 예시
-export const largeData = Array.from({ length: 10 }, (_, i) => ({
+export const largeData = Array.from({ length: 10000 }, (_, i) => ({
   id: i + 1,
   name: `사용자 ${i + 1}`,
   age: Math.floor(Math.random() * 60) + 20,

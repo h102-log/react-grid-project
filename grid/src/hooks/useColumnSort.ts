@@ -1,5 +1,6 @@
 // useColumnSort.ts
-// 컬럼 정렬 관련 커스텀 훅 (구현 예정)
+// 컬럼 정렬 관련 커스텀 훅 (구현 예정) 컬럼 헤드 드래그시 LEFT
+
 import { useGridStore } from "../store/gridStore";
 import { useMemo } from "react";
 export const useColumnSort = () => {
@@ -28,6 +29,9 @@ export const useColumnSort = () => {
   }, [data, sortingColumn, sortDirection]);
 
   // 컬럼을 클릭했을 때 정렬 상태를 업데이트하는 함수
+  // [FLIP 아키텍처] 정렬 실행 직전 GridBody의 useLayoutEffect에서
+  // 현재 virtualRow.start 위치들을 prevPositionsRef에 자동 캡처합니다.
+  // (captureVirtualizerSnapshot 역할은 GridBody의 useLayoutEffect 타이밍으로 수행)
   const fnSetSortingColumn = (colKey: string) => {
     if (sortingColumn === colKey) {
       // 같은 컬럼을 클릭하면 정렬 방향 토글

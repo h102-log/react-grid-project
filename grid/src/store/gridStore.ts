@@ -10,6 +10,7 @@ interface GridState {
   dragPointer: { x: number; y: number } | null; // 드래그 중인 포인터 위치 상태 추가
   dragColumn: string | null; // 현재 드래그 중인 컬럼 키 상태 추가
   scrollLeft: number; // 수평 스크롤 위치
+  prevPositions: Record<string, number>; // 행 ID별 이전 translateY 스냅샷 (FLIP 애니메이션용)
   setColumns: (cols: Column[]) => void; // 컬럼 업데이트 함수
   setData: (data: RowData[]) => void; // 행 데이터 업데이트 함수
   setSortingColumn: (colKey: string | null) => void; // 정렬 중인 컬럼 업데이트 함수
@@ -17,6 +18,7 @@ interface GridState {
   setDragPointer: (pointer: { x: number; y: number } | null) => void; // 드래그 포인터 위치 업데이트 함수
   setDragColumn: (colKey: string | null) => void; // 드래그 중인 컬럼 키 업데이트 함수
   setScrollLeft: (x: number) => void; // 스크롤 위치 업데이트 함수
+  setPrevPositions: (positions: Record<string, number>) => void; // 이전 위치 스냅샷 업데이트 함수
 }
 
 export const useGridStore = create<GridState>((set) => ({
@@ -27,6 +29,7 @@ export const useGridStore = create<GridState>((set) => ({
   dragPointer: null, // 드래그 포인터 초기값 설정
   dragColumn: null, // 드래그 중인 컬럼 초기값 설정
   scrollLeft: 0, // 스크롤 위치 초기값
+  prevPositions: {}, // 이전 위치 스냅샷 초기값 (FLIP 애니메이션용)
   setColumns: (columns) => set({ columns }),
   setData: (data) => set({ data }),
   setSortingColumn: (colKey) => set({ sortingColumn: colKey }), // 매개변수 colKey를 받아 상태 업데이트
@@ -34,4 +37,5 @@ export const useGridStore = create<GridState>((set) => ({
   setDragPointer: (pointer) => set({ dragPointer: pointer }), // 매개변수 pointer를 받아 상태 업데이트
   setDragColumn: (colKey) => set({ dragColumn: colKey }), // 매개변수 colKey를 받아 상태 업데이트
   setScrollLeft: (x) => set({ scrollLeft: x }), // 스크롤 위치 업데이트
+  setPrevPositions: (positions) => set({ prevPositions: positions }), // 이전 위치 스냅샷 업데이트
 }));
